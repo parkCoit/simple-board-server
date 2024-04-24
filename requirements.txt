@@ -1,0 +1,14 @@
+cryptography
+django
+django-allauth
+django-cors-headers
+djangorestframework
+djangorestframework-simplejwt
+mysql
+mysql-connector
+mysqlclient
+SQLAlchemy==1.4.39
+riotwatcher
+sqlalchemy
+pymysql
+pandas
