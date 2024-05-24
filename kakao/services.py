@@ -2,7 +2,7 @@ import json
 
 import requests
 
-from admin.settings import SOCIAL_OUTH_CONFIG
+from admin.settings import SOCIAL_AUTH_CONFIG
 
 
 class KakaoServices(object):
@@ -14,14 +14,16 @@ class KakaoServices(object):
             headers={"Content-Type": "application/x-www-form-urlencoded"},
             data={
                 "grant_type": "authorization_code",
-                "client_id": SOCIAL_OUTH_CONFIG["KAKAO_REST_API_KEY"],
-                "redirect_uri": SOCIAL_OUTH_CONFIG["KAKAO_REDIRECT_URI"],
-                'client_secret': SOCIAL_OUTH_CONFIG['KAKAO_SECRET_KEY'],
+                "client_id": SOCIAL_AUTH_CONFIG["KAKAO_REST_API_KEY"],
+                "redirect_uri": SOCIAL_AUTH_CONFIG["KAKAO_REDIRECT_URI"],
+                'client_secret': SOCIAL_AUTH_CONFIG['KAKAO_SECRET_KEY'],
                 "code": code
             },
         )
         print(access_token)
         if access_token.status_code == 400 :
+            error_message = access_token.json()['error_description']
+            print(f"Error fetching access token: {error_message}")
             return access_token.json()['error']
         else:
             access_token = access_token.json()['access_token']
