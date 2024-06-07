@@ -14,7 +14,7 @@ def kakao_login(request):
         code = request.data["code"]
         get_token = KakaoServices().get_token(code)
         if get_token == 'invalid_grant':
-            return Response({'코드 값으로 토큰을 가져올 수 없음'})
+            return Response({'data': 'not found token'})
         else:
             kakao_user = KakaoServices().get_kakao_user(get_token)
             token = KakaoRepository().get_jwt(kakao_user)
