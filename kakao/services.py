@@ -1,5 +1,6 @@
-import json
+from datetime import datetime
 
+import jwt
 import requests
 
 from admin.settings import SOCIAL_AUTH_CONFIG
@@ -21,7 +22,7 @@ class KakaoServices(object):
             },
         )
         print(access_token)
-        if access_token.status_code == 400 :
+        if access_token.status_code == 400:
             error_message = access_token.json()['error_description']
             print(f"Error fetching access token: {error_message}")
             return access_token.json()['error']
@@ -39,7 +40,7 @@ class KakaoServices(object):
             },
         )
         print(user_data.status_code)
-        if user_data.status_code == 401 :
+        if user_data.status_code == 401:
             print(user_data.json())
             return user_data.json()
         else:
@@ -52,3 +53,13 @@ class KakaoServices(object):
             nickname = profile['nickname']
             kakao_user = {'id': email, 'nickname': nickname}
             return kakao_user
+
+    def get_jwt(self, user_info):
+        dt = str(datetime.now())
+        encoded_jwt = jwt.encode({'id': user_info['id'], 'nickname': user_info['nickname'], 'datetime': dt},
+                                 SOCIAL_AUTH_CONFIG['KAKAO_SECRET_KEY'], algorithm=SOCIAL_AUTH_CONFIG['ALGORITHM'])
+        kakao_token = {"token": encoded_jwt, 'id': user_info['id']}
+        payload = jwt.decode(encoded_jwt, SOCIAL_AUTH_CONFIG['KAKAO_SECRET_KEY'],
+                             algorithms=SOCIAL_AUTH_CONFIG['ALGORITHM'])
+        print(payload)
+        return kakao_token
