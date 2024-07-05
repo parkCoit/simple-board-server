@@ -98,9 +98,7 @@ SIMPLE_JWT = {
 }
 
 # CORS 관련 추가
-CORS_ORIGIN_WHITELIST = ['http://192.168.0.20:3000',
-                         'http://localhost:3000',
-                         "https://parkcoit.github.io"]
+CORS_ORIGIN_WHITELIST = secrets["CORS_ORIGIN_WHITELIST"]
 CORS_ALLOW_CREDNTIALS = True
 
 MIDDLEWARE = [
@@ -138,16 +136,7 @@ WSGI_APPLICATION = 'admin.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "simple_board",
-        "USER": "root",
-        "PASSWORD": "root",
-        "HOST": "localhost",
-        "PORT": "3306"
-    }
-}
+DATABASES = secrets['DATABASE']
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
