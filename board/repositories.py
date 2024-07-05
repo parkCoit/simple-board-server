@@ -1,9 +1,8 @@
-
 from rest_framework.response import Response
 
 from board.models import Board
 from board.serializers import BoardSerializer
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import pytz
 from django.shortcuts import get_object_or_404
 
@@ -59,14 +58,16 @@ class BoardRepository(object):
     def get_page_board(self, page):
         per_page = 10
 
-        # 최신 순서로 정렬
         user_board = Board.objects.all().select_related('author').order_by('-time')
-
-        # 페이지네이션 설정
         paginator = Paginator(user_board, per_page)
-        page_obj = paginator.get_page(page)
 
-        # 데이터 포맷 변경
+        try:
+            page_obj = paginator.page(page)
+        except PageNotAnInteger:
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            return {'error': 'Page not found'}
+
         user_board_ls = [
             {
                 'custom_id': board.custom_id,
@@ -83,8 +84,45 @@ class BoardRepository(object):
         response_data = {
             'total_count': paginator.count,
             'total_pages': paginator.num_pages,
-            'current_page': page,
+            'current_page': page_obj.number,
             'data': user_board_ls
         }
         return response_data
 
+    def get_title_page_board(self, page, content):
+
+        per_page = 10
+
+        user_board = Board.objects.filter(title__icontains=content).select_related('author').order_by('-time')
+
+        paginator = Paginator(user_board, per_page)
+
+        try:
+            page_obj = paginator.page(page)
+            if not page_obj.object_list:
+                return {'error': 'Page not found'}
+        except PageNotAnInteger:
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            return {'error': 'Page not found'}
+
+        user_board_ls = [
+            {
+                'custom_id': board.custom_id,
+                'title': board.title,
+                'content': board.content,
+                'time': board.time.astimezone(pytz.timezone('Asia/Seoul')).strftime('%Y-%m-%d %H:%M:%S'),
+                'modification_time': board.modification_time.astimezone(pytz.timezone('Asia/Seoul')).strftime(
+                    '%Y-%m-%d %H:%M:%S'),
+                'author_id': board.author.id,
+                'author_nickname': board.author.nickname
+            } for board in page_obj
+        ]
+
+        response_data = {
+            'total_count': paginator.count,
+            'total_pages': paginator.num_pages,
+            'current_page': page_obj.number,
+            'data': user_board_ls
+        }
+        return response_data

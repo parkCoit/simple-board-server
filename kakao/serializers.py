@@ -30,4 +30,3 @@ class KakaoTokenSerializer(serializers.ModelSerializer):
 
     def delete(self, instance, validated_data):
         pass
-

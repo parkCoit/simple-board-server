@@ -23,6 +23,9 @@
 !setup.cfg
 !cfg/yolov3*.cfg
 api_key.py
+env.py
+databases.py
+
 
 storage.googleapis.com
 runs/*

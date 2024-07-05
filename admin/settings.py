@@ -11,20 +11,16 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import json
 import os
-from pathlib import Path
 from datetime import timedelta
-
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 scriptpath = os.path.dirname(__file__)
 filename = os.path.join(scriptpath, 'secrets.json')
 with open(filename, "r") as f:
     secrets = json.load(f)
-
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -36,7 +32,6 @@ SECRET_KEY = secrets["SECRET_KEY"]
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -59,9 +54,8 @@ SOCIAL_AUTH_CONFIG = {
     'KAKAO_REST_API_KEY': secrets['KAKAO_REST_API_KEY'],
     "KAKAO_REDIRECT_URI": secrets['KAKAO_REDIRECT_URI'],
     "KAKAO_SECRET_KEY": secrets['KAKAO_SECRET_KEY'],
-    "ALGORITHM" : secrets['ALGORITHM']
+    "ALGORITHM": secrets['ALGORITHM']
 }
-
 
 # JWT
 REST_FRAMEWORK = {
@@ -104,8 +98,7 @@ SIMPLE_JWT = {
 }
 
 # CORS 관련 추가
-CORS_ORIGIN_WHITELIST = ['http://192.168.0.20:3000',
-                         'http://localhost:3000']
+CORS_ORIGIN_WHITELIST = secrets["CORS_ORIGIN_WHITELIST"]
 CORS_ALLOW_CREDNTIALS = True
 
 MIDDLEWARE = [
@@ -140,21 +133,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'admin.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": "simple_board",
-        "USER": "root",
-        "PASSWORD": "root",
-        "HOST": "localhost",
-        "PORT": "3306"
-    }
-}
-
+DATABASES = secrets['DATABASE']
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -174,7 +156,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -185,7 +166,6 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/

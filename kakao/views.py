@@ -1,10 +1,10 @@
-import jwt
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from kakao.services import KakaoServices
-from kakao.serializers import KakaoSerializer, KakaoTokenSerializer
+
 from kakao.repositories import KakaoRepository
+from kakao.serializers import KakaoSerializer, KakaoTokenSerializer
+from kakao.services import KakaoServices
 
 
 @api_view(['POST'])
@@ -17,7 +17,7 @@ def kakao_login(request):
             return Response({'data': 'not found token'})
         else:
             kakao_user = KakaoServices().get_kakao_user(get_token)
-            token = KakaoRepository().get_jwt(kakao_user)
+            token = KakaoServices().get_jwt(kakao_user)
             if KakaoRepository().find_kakao_exists(kakao_user['id']) is not False:
                 kakaoTokenSerializer = KakaoTokenSerializer(data=token)
                 if kakaoTokenSerializer.is_valid():
@@ -57,7 +57,8 @@ def kakao_token(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    else : return KakaoRepository().get_all_kakao_token()
+    else:
+        return KakaoRepository().get_all_kakao_token()
 
 
 @api_view(['GET'])
