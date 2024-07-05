@@ -4,11 +4,16 @@ django-allauth
 django-cors-headers
 djangorestframework
 djangorestframework-simplejwt
+gunicorn
+jwt
 mysql
 mysql-connector
 mysqlclient
 SQLAlchemy==1.4.39
 riotwatcher
+requests
 sqlalchemy
 pymysql
+pyjwt
+pytz
 pandas
