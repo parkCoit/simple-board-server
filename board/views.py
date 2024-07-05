@@ -1,5 +1,4 @@
 from django.http import JsonResponse, HttpResponse
-from django.shortcuts import render
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -8,18 +7,14 @@ from board.repositories import BoardRepository
 from board.serializers import BoardSerializer
 
 
-# Create your views here.
-
-
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 def board(request):
-    print(f"data : {request.data}")
     if request.method == "POST":
         serializer = BoardSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             print('게시물 저장')
-            return JsonResponse({'data' : '작성이 완료 되었습니다!'}, safe=False)
+            return JsonResponse({'data': '작성이 완료 되었습니다!'}, safe=False)
         else:
             print('게시물 저장중 에러')
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -27,6 +22,10 @@ def board(request):
         if 'customId' in request.GET:
             customId = request.GET['customId']
             return JsonResponse(BoardRepository().find_board_for_id(customId), safe=False)
+        if 'content' in request.GET:
+            page = request.GET['page']
+            content = request.GET['content']
+            return JsonResponse(BoardRepository().get_title_page_board(page, content), safe=False)
         else:
             page = request.GET['page']
             return JsonResponse(BoardRepository().get_page_board(page), safe=False)
@@ -40,6 +39,3 @@ def board(request):
             return HttpResponse(status=204)
         else:
             return JsonResponse({'error': '해당 게시물을 찾을 수 없습니다.'}, status=404)
-
-
-
