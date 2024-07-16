@@ -12,7 +12,6 @@ mysqlclient
 SQLAlchemy==1.4.39
 riotwatcher
 requests
-sqlalchemy
 pymysql
 pyjwt
 pytz

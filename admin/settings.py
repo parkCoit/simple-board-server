@@ -31,7 +31,7 @@ SECRET_KEY = secrets["SECRET_KEY"]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['34.64.46.94:8000']
 
 # Application definition
 
