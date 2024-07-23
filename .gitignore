@@ -26,6 +26,11 @@ api_key.py
 env.py
 databases.py
 
+# ssl 인증서
+key.pem
+cert.pem
+csr.pem
+
 
 storage.googleapis.com
 runs/*
