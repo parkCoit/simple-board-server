@@ -5,7 +5,6 @@ django-cors-headers
 djangorestframework
 djangorestframework-simplejwt
 gunicorn
-jwt
 mysql
 mysql-connector
 mysqlclient
