@@ -20,11 +20,17 @@
 *.data
 *.json
 *.cfg
+*.gz
 !setup.cfg
 !cfg/yolov3*.cfg
 api_key.py
 env.py
 databases.py
+.prettierrc
+cloud-sql-proxy
+docker-compose.yml
+Dockerfile
+
 
 # ssl 인증서
 key.pem
