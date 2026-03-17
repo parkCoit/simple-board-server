@@ -8,7 +8,7 @@ gunicorn
 mysql
 mysql-connector
 mysqlclient
-SQLAlchemy==1.4.39
+SQLAlchemy
 riotwatcher
 requests
 pymysql
